@@ -194,7 +194,7 @@ if selected == "Parkinson's Prediction":
                 if parkinsons_risk_score > 0.7:
                     st.warning("High Risk for developing Parkinson's disease. Regular check-ups are recommended.")
                 elif parkinsons_risk_score > 0.4:
-                    st.info("Low Risk for developing Parkinson's disease. Maintain a healthy lifestyle.")
+                    st.info("Moderate Risk for developing Parkinson's disease. Maintain a healthy lifestyle.")
                 else:
                     st.success("Low Risk for Parkinson's disease. Keep up the good work!")
 
