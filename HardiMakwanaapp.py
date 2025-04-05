@@ -1,5 +1,6 @@
 import os
 import pickle
+import matplotlib.pyplot as plt
 import streamlit as st
 from streamlit_option_menu import option_menu
 
@@ -77,15 +78,33 @@ if selected == "Diabetes Prediction":
             )
             st.subheader(f"Personalized Risk Score for Diabetes: {risk_score:.2f}")
 
-            if diab_prediction == 1:
-                st.warning("*High Risk:* The person has been diagnosed with diabetes. Immediate medical attention is advised.")
+            # 🎯 Add Pie Chart for Diabetes
+            diabetes_labels = ['Glucose', 'BMI', 'Age', 'Blood Pressure']
+            diabetes_weights = [
+                (float(Glucose) / 200) * 0.4,
+                (float(BMI) / 50) * 0.2,
+                (float(Age) / 100) * 0.2,
+                (float(BloodPressure) / 120) * 0.2
+            ]
+            fig2, ax2 = plt.subplots(facecolor='black')
+            ax2.pie(diabetes_weights, labels=diabetes_labels, autopct='%1.1f%%', startangle=90, textprops={'color': 'white'})
+            ax2.axis('equal')
+            fig2.patch.set_facecolor('black')
+            st.pyplot(fig2)
+
+            
+            if diab_prediction == 1 or risk_score > 1:
+                st.warning("⚠️ High Risk: The person is likely to have diabetes. Consult a doctor.")
             else:
                 if risk_score > 0.7:
-                    st.warning("High Risk for developing diabetes. Consider preventive measures.")
+                    st.warning("⚠️ High Risk for developing diabetes. Monitor your health closely.")
                 elif risk_score > 0.4:
-                    st.info("Moderate Risk for developing diabetes. Maintain a healthy lifestyle.")
+                    st.info("🟡 Moderate Risk: Maintain a healthy lifestyle.")
                 else:
-                    st.success("Low Risk for diabetes. Keep up the good work!")
+                    st.success("🟢 Low Risk: Keep up the healthy habits!")
+
+        except ValueError:
+            st.error("Please provide valid numeric inputs.")
 
         except ValueError:
             st.error("Please provide valid numeric inputs.")
@@ -133,6 +152,21 @@ if selected == "Heart Disease Prediction":
             )
             st.subheader(f"Personalized Risk Score for Heart Disease: {risk_score:.2f}")
 
+            # ✅ PIE CHART for risk factor contribution
+            heart_labels = ['Age', 'Cholesterol', 'Resting BP', 'ST Depression']
+            heart_weights = [
+                (float(age) / 100) * 0.3,
+                (float(chol) / 400) * 0.3,
+                (float(trestbps) / 200) * 0.2,
+                (float(oldpeak) / 6.0) * 0.2
+            ]
+            fig1, ax1 = plt.subplots(facecolor='black')
+            ax1.pie(heart_weights, labels=heart_labels, autopct='%1.1f%%', startangle=90, textprops={'color': 'white'})
+            ax1.axis('equal')
+            fig1.patch.set_facecolor('black')
+            st.pyplot(fig1)
+
+            # Risk message based on prediction and score
             if heart_prediction == 1:
                 st.warning("*High Risk:* The person has been diagnosed with heart disease. Consult a cardiologist immediately.")
             else:
@@ -188,7 +222,21 @@ if selected == "Parkinson's Prediction":
             )
             st.subheader(f"Personalized Risk Score for Parkinson's Disease: {parkinsons_risk_score:.2f}")
 
-            if parkinsons_prediction == 1:
+            # 🎯 Add Pie Chart for Parkinson’s
+            parkinsons_labels = ['MDVP:Fo(Hz)', 'MDVP:Jitter(%)', 'HNR', 'PPE']
+            parkinsons_weights = [
+                (user_input[0] / 200) * 0.3,
+                (user_input[3] / 0.1) * 0.3,
+                (user_input[15] / 50) * 0.2,
+                (user_input[-1] / 1.0) * 0.2
+            ]
+            fig3, ax3 = plt.subplots(facecolor='black')
+            ax3.pie(parkinsons_weights, labels=parkinsons_labels, autopct='%1.1f%%', startangle=90, textprops={'color': 'white'})
+            ax3.axis('equal')
+            fig3.patch.set_facecolor('black')
+            st.pyplot(fig3)
+
+            if parkinsons_prediction > 1:
                 st.warning("*High Risk:* The person has been diagnosed with Parkinson's disease. Consult a neurologist for treatment.")
             else:
                 if parkinsons_risk_score > 0.7:
